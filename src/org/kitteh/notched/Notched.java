@@ -59,6 +59,7 @@ public class Notched extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(this, this);
         this.getConfig().options().copyDefaults(true);
         this.maxSize = this.getConfig().getInt("max-size", 4);
+        this.defaultSize = this.getConfig().getInt("default-size", 4);
         this.saveConfig();
         this.kaboom = new HashMap<String, Integer>();
         if (this.maxSize < 4) {
