@@ -1,9 +1,19 @@
 name: Notched
 main: org.kitteh.notched.Notched
-authors: ['RROD','mbaxter']
+authors: ['mbaxter','RROD']
 description: Explosive arrows as demonstrated by Notch
-version: 2.0
+version: 1.0
 permissions:
-    notched.destroy:
-        description: Destroy blocks in an explosion
-        default: false
+  notched.use:
+    description: Destroy blocks in an explosion
+    default: op
+  notched.unlimited:
+    description: Not limited to configured max explosion size
+    default: op
+commands:
+  notched:
+    description: Kaboom
+    usage: |
+            /notched
+            /notched <size>
+            /notched off
