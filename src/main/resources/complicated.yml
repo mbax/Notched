@@ -1,0 +1,13 @@
+## OH GOD IT'S A COMPLICATED SETUP
+#
+#  I'll just give an example of how this works.
+#
+# large: 5
+#
+# That would mean any user with perm notched.complicated.large
+#  gets an explosion max size of 5.
+#
+# Here's a good start:
+small: 2
+large: 5
+epic: 10

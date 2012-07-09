@@ -1,2 +1,11 @@
+#     Notched
+#
+# Just set max-size and default-size for a simple setup.
+# For a complicated setup, enable complications
+#   and be prepared to use complicated.yml
+
 max-size: 4
 default-size: 4
+
+complications:
+  enabled: false

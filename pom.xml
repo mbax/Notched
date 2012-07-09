@@ -39,8 +39,9 @@
         <filtering>true</filtering>
         <directory>${basedir}/src/main/resources</directory>
         <includes>
-          <include>plugin.yml</include>
+          <include>complicated.yml</include>
           <include>config.yml</include>
+          <include>plugin.yml</include>
         </includes>
       </resource>
     </resources>
