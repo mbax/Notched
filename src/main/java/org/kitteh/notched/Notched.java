@@ -23,12 +23,10 @@ public class Notched extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
-            if (sender.hasPermission(this.PERM_RELOAD)) {
-                this.loadConfig();
-                sender.sendMessage("Reloaded. Max explosion force " + this.maxSize + ", default " + this.defaultSize);
-                return true;
-            }
+        if ((args.length > 0) && args[0].equalsIgnoreCase("reload") && sender.hasPermission(this.PERM_RELOAD)) {
+            this.loadConfig();
+            sender.sendMessage("Reloaded. Max explosion force " + this.maxSize + ", default " + this.defaultSize);
+            return true;
         }
         if (sender instanceof Player) {
             if (sender.hasPermission(this.PERM_USE)) {
@@ -69,18 +67,6 @@ public class Notched extends JavaPlugin implements Listener {
         this.getLogger().info("Enabled with max explosion force of " + this.maxSize + " and default of " + this.defaultSize);
     }
 
-    private void loadConfig() {
-        this.reloadConfig();
-        this.getConfig().options().copyDefaults(true);
-        this.maxSize = this.getConfig().getInt("max-size", 4);
-        this.defaultSize = this.getConfig().getInt("default-size", 4);
-        this.saveConfig();
-        this.kaboom = new HashMap<String, Integer>();
-        if (this.maxSize < 4) {
-            this.defaultSize = this.maxSize;
-        }
-    }
-
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
         if ((event.getEntity() instanceof Arrow)) {
@@ -94,6 +80,18 @@ public class Notched extends JavaPlugin implements Listener {
                 event.getEntity().getWorld().createExplosion(arrow.getLocation(), force);
                 event.getEntity().remove();
             }
+        }
+    }
+
+    private void loadConfig() {
+        this.reloadConfig();
+        this.getConfig().options().copyDefaults(true);
+        this.maxSize = this.getConfig().getInt("max-size", 4);
+        this.defaultSize = this.getConfig().getInt("default-size", 4);
+        this.saveConfig();
+        this.kaboom = new HashMap<String, Integer>();
+        if (this.maxSize < 4) {
+            this.defaultSize = this.maxSize;
         }
     }
 }
