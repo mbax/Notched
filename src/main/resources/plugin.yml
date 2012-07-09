@@ -2,7 +2,7 @@ name: Notched
 main: org.kitteh.notched.Notched
 authors: ['mbaxter','RROD']
 description: Explosive arrows as demonstrated by Notch
-version: 1.1
+version: '${project.version}'
 permissions:
   notched.use:
     description: Destroy blocks in an explosion
