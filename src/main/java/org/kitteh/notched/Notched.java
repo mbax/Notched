@@ -17,11 +17,19 @@ public class Notched extends JavaPlugin implements Listener {
     private int maxSize;
     private int defaultSize;
     private HashMap<String, Integer> kaboom;
+    private final String PERM_RELOAD = "notched.reload";
     private final String PERM_USE = "notched.use";
     private final String PERM_UNLIMITED = "notched.unlimited";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
+            if (sender.hasPermission(this.PERM_RELOAD)) {
+                this.loadConfig();
+                sender.sendMessage("Reloaded. Max explosion force " + this.maxSize + ", default " + this.defaultSize);
+                return true;
+            }
+        }
         if (sender instanceof Player) {
             if (sender.hasPermission(this.PERM_USE)) {
                 int size = 0;
@@ -57,6 +65,12 @@ public class Notched extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         this.getServer().getPluginManager().registerEvents(this, this);
+        this.loadConfig();
+        this.getLogger().info("Enabled with max explosion force of " + this.maxSize + " and default of " + this.defaultSize);
+    }
+
+    private void loadConfig() {
+        this.reloadConfig();
         this.getConfig().options().copyDefaults(true);
         this.maxSize = this.getConfig().getInt("max-size", 4);
         this.defaultSize = this.getConfig().getInt("default-size", 4);
@@ -65,7 +79,6 @@ public class Notched extends JavaPlugin implements Listener {
         if (this.maxSize < 4) {
             this.defaultSize = this.maxSize;
         }
-        this.getLogger().info("Enabled with max explosion force of " + this.maxSize + " and default of " + this.defaultSize);
     }
 
     @EventHandler

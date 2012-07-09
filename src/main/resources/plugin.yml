@@ -10,6 +10,9 @@ permissions:
   notched.unlimited:
     description: Not limited to configured max explosion size
     default: op
+  notched.reload:
+    description: Able to reload config
+    default: op
 commands:
   notched:
     description: Kaboom
@@ -17,3 +20,4 @@ commands:
             /notched
             /notched <size>
             /notched off
+            /notched reload
