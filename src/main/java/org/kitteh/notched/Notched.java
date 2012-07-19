@@ -103,18 +103,22 @@ public class Notched extends JavaPlugin implements Listener {
     }
 
     private int getComplicated(CommandSender sender) {
+        int result = -1;
         for (final String perm : this.complicatedNodes.keySet()) {
             if (sender.hasPermission(perm)) {
-                return this.complicatedNodes.get(perm);
+                int amt = this.complicatedNodes.get(perm);
+                if(amt > result) {
+                    result = amt;
+                }
             }
         }
-        return -1;
+        return result;
     }
 
     private int getDefaultSize(CommandSender sender) {
         if (this.complicatedMode) {
             final int comp = this.getComplicated(sender);
-            if (comp >= 0) {
+            if (comp <= 0) {
                 return comp;
             }
         }
