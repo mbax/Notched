@@ -4,7 +4,7 @@
   <groupId>org.kitteh</groupId>
   <artifactId>notched</artifactId>
   <packaging>jar</packaging>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <name>Notched</name>
   <url>http://github.com/mbax/Notched</url>
   <properties>
