@@ -13,8 +13,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -27,7 +30,8 @@ public class Notched extends JavaPlugin implements Listener {
     private HashMap<String, Integer> kaboom;
 
     private boolean complicatedMode;
-    private final HashMap<String, Integer> complicatedNodes = new HashMap<String, Integer>();;
+    private final HashMap<String, Integer> complicatedNodes = new HashMap<String, Integer>();
+    private final HashMap<TNTPrimed, Float> primed = new HashMap<TNTPrimed, Float>();
 
     private final String PERM_RELOAD = "notched.reload";
     private final String PERM_USE = "notched.use";
@@ -86,6 +90,14 @@ public class Notched extends JavaPlugin implements Listener {
         this.getLogger().info("Enabled with max explosion force of " + this.maxSize + " and default of " + this.defaultSize);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onKaboom(EntityExplodeEvent event) {
+        if (primed.containsKey(event.getEntity())) {
+            event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), event.isCancelled() ? 0 : primed.get(event.getEntity()));
+            event.setCancelled(true);
+        }
+    }
+
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
         if ((event.getEntity() instanceof Arrow)) {
@@ -96,7 +108,9 @@ public class Notched extends JavaPlugin implements Listener {
                     return;
                 }
                 final float force = this.kaboom.get(player.getName());
-                event.getEntity().getWorld().createExplosion(arrow.getLocation(), force);
+                TNTPrimed tnt = event.getEntity().getWorld().spawn(event.getEntity().getLocation(), TNTPrimed.class);
+                tnt.setFuseTicks(0);
+                primed.put(tnt, force);
                 event.getEntity().remove();
             }
         }
@@ -107,7 +121,7 @@ public class Notched extends JavaPlugin implements Listener {
         for (final String perm : this.complicatedNodes.keySet()) {
             if (sender.hasPermission(perm)) {
                 int amt = this.complicatedNodes.get(perm);
-                if(amt > result) {
+                if (amt > result) {
                     result = amt;
                 }
             }
